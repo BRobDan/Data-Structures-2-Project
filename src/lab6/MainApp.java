@@ -17,6 +17,7 @@ public class MainApp {
 
         System.out.println("\nGraph Structure");
 
+        // this function is strictly for testing the graph data structure
         testGraph.getNodes().stream()
                 .forEach(node -> {
                     System.out.println("Node " + node.getName() + " -> ");

@@ -29,6 +29,12 @@ public class Graph<T>
         adjList.put(node, new HashMap<>());
     }
 
+    // remove a vertex from the graph (this is just for the extra Bellman-Ford vertex)
+    public void removeVertex(Node<T> node)
+    {
+        adjList.remove(node);
+    }
+
     // add an edge to the graph
     public void addEdge(Node<T> start, Node<T> finish, Integer weight)
     {
