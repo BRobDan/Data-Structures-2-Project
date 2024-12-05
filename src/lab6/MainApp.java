@@ -12,7 +12,13 @@ public class MainApp {
 
         System.out.println("Johnson's Algorithm Test program");
 
+        // create graph from user input
         Graph<String> testGraph = InputProcessing.returnUserGraph(keyboard);
+
+        // create new Johnson class object and pass graph through method
+        Johnson<String> johnson = new Johnson<>();
+        johnson.johnsonAlgo(testGraph); // adjust this if it ends up returning something *****
+
 
 
         System.out.println("\nGraph Structure");
@@ -32,7 +38,4 @@ public class MainApp {
 
 
         }
-//        System.out.println(testGraph.getNumVertices());
-//        System.out.println(testGraph.getNumEdges());
-
     }

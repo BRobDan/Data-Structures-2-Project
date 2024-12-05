@@ -49,10 +49,9 @@ public class InputProcessing
                     .findFirst()
                     .orElse(null);
 
-            // add the edge (use both directions to make it undirected
+            // add the edge (graph is directed b/c johnson's won't work on undirected graph with
+            // negative edge weights)
             testGraph.addEdge(startNode, endNode, weight);
-            testGraph.addEdge(endNode, startNode, weight);
-
         }
 
         return testGraph;

@@ -1,11 +1,10 @@
 package lab6;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class BellmanFord<T>
 {
-    public HashMap<Node<T>, Integer> bellmanFord(Graph<T> testGraph)
+    public void bellmanFord(Graph<T> testGraph)
     {
         // add new node to graph, and set distance to 0
         Node<T> bfNode = new Node<>(null);
@@ -27,7 +26,7 @@ public class BellmanFord<T>
         {
             for (Node<T> node : testGraph.getNodes())
             {
-                node.getAdjacentNodes().entrySet().stream()
+                testGraph.getAdjNodes(node).entrySet().stream()
                         .forEach(entry -> {
                             int dU = node.getDistance();
                             int wUV = entry.getValue();
@@ -40,11 +39,9 @@ public class BellmanFord<T>
         }
 
         // check for negative weight cycles
-        boolean negativeWeight = false;
-
         for (Node<T> node : testGraph.getNodes())
         {
-            for (Map.Entry<Node<T>, Integer> entry: testGraph.getAdjNodes(node).entrySet())
+            for (Map.Entry<Node<T>, Integer> entry : testGraph.getAdjNodes(node).entrySet())
             {
                 int dU = node.getDistance();
                 int wUV = entry.getValue();
@@ -52,26 +49,27 @@ public class BellmanFord<T>
 
                 if (dV > wUV + dU)
                 {
-                    negativeWeight = true;
-                    break;
+                    throw new IllegalStateException("Graph has a negative weight cycle!");
                 }
             }
-            if (negativeWeight)
-                break;
         }
-
-        if (negativeWeight)
-            throw new IllegalStateException("Graph has a negative weight cycle!");
 
         // set the graph back to the original data
         // sets numVertices back to normal & removes the extra node
         testGraph.setNumVertices(testGraph.getNumVertices() - 1);
         testGraph.removeVertex(bfNode);
 
-        // add distances to a new hashmap to return
-        HashMap<Node<T>, Integer> newDistanceMap = new HashMap<>();
-        testGraph.getNodes().stream().forEach(n -> newDistanceMap.put(n, n.getDistance()));
+        // reweight the edges using the new distances
+        for (Node<T> node : testGraph.getNodes())
+        {
+            for (Map.Entry<Node<T>, Integer> entry : testGraph.getAdjNodes(node).entrySet())
+            {
+                int dU = node.getDistance();
+                int wUV = entry.getValue();
+                int dV = entry.getKey().getDistance();
 
-        return newDistanceMap;
+                entry.setValue(dU + wUV - dV); // uses formula -> w(u,v)' = d[u] + w(u,v) - d[v]
+            }
+        }
     }
 }

@@ -4,8 +4,8 @@ package lab6;
 // that takes a graph reference as a parameter and just prints out the solution
 public class Johnson<T>
 {
-    public void Johnson(Graph<T> testGraph)
+    public void johnsonAlgo(Graph<T> testGraph)
     {
-        // add the logic here later
+
     }
 }
