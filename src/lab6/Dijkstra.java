@@ -32,17 +32,15 @@ import java.util.stream.Stream;
 
 public class Dijkstra<T> {
 
-    public void calculateShortestPath(Graph<T> graph, Node<T> source) {
+    public void calculateShortestPath(Node<T> source) {
+
         source.setDistance(0);
         Set<Node<T>> settledNodes = new HashSet<>(); // creates a set of settled nodes
-        //
         Queue<Node<T>> unsettledNodes = new PriorityQueue<>(Collections.singleton(source));
         while (!unsettledNodes.isEmpty()) {
             Node<T> currentNode = unsettledNodes.poll();
 
-            Map<Node<T>, Integer> adjacentNodes = graph.getAdjNodes(currentNode);
-
-            adjacentNodes
+            currentNode.getAdjacentNodes()
                     .entrySet().stream()
                     .filter(entry -> !settledNodes.contains(entry.getKey()))
                     .forEach(entry -> {

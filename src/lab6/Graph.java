@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 
 // This graph class uses an adjacency list. It creates an undirected, weighted graph
@@ -40,6 +41,7 @@ public class Graph<T>
     {
         //adds the new edge to the HashMap that is connected to the start node with it's weight
         adjList.get(start).put(finish, weight);
+        start.addAdjacentNode(finish, weight); // also add it to the adjacent node list
     }
 
     // return the adjacent nodes for a node
