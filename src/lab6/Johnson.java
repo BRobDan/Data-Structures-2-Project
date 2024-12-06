@@ -29,7 +29,7 @@ public class Johnson<T>
             // create Djikstra object to run the algorithm
             Dijkstra<T> dijkstra = new Dijkstra<>();
             testGraph.getNodes().forEach(entry -> entry.setShortestPath(new LinkedList<>())); // got stuck on this forever
-            dijkstra.calculateShortestPath(node);
+            dijkstra.calculateShortestPath(testGraph, node);
             dijkstra.printPaths(testGraph.getNodes().stream().toList());
         }
     }

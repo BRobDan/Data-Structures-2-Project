@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 
 public class Dijkstra<T> {
 
-    public void calculateShortestPath(Node<T> source) {
+    public void calculateShortestPath(Graph<T> graph, Node<T> source) {
 
         source.setDistance(0);
         Set<Node<T>> settledNodes = new HashSet<>(); // creates a set of settled nodes
@@ -40,7 +40,7 @@ public class Dijkstra<T> {
         while (!unsettledNodes.isEmpty()) {
             Node<T> currentNode = unsettledNodes.poll();
 
-            currentNode.getAdjacentNodes()
+            graph.getAdjNodes(currentNode)
                     .entrySet().stream()
                     .filter(entry -> !settledNodes.contains(entry.getKey()))
                     .forEach(entry -> {
@@ -72,5 +72,9 @@ public class Dijkstra<T> {
             );
         });
     }
+
+    // i need to figure out a way to have it output the correct distances and not the reweighted ones
+    // i accidentally found out that the original edge weights are being contained in the node's
+    // adjacentNodes hashmap, and the updated edge weights are being saved in my graph. so i can use that
 
 }
