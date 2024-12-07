@@ -8,14 +8,12 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-
-
-// This graph class uses an adjacency list. It creates an undirected, weighted graph
 
 @Getter
 @Setter
 @RequiredArgsConstructor
+
+// This graph class uses an adjacency list. It creates a directed, weighted graph
 public class Graph<T>
 {
     // creates an empty HashMap that holds the adjacency list

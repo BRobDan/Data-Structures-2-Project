@@ -23,6 +23,7 @@
  */
 
 // i modified this class to take a graph as input
+// i also modified the printPaths() method
 
 package lab6;
 
@@ -30,20 +31,24 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Dijkstra<T> {
+public class Dijkstra<T>
+{
 
-    public void calculateShortestPath(Graph<T> graph, Node<T> source) {
+    public void calculateShortestPath(Graph<T> graph, Node<T> source)
+    {
 
         source.setDistance(0);
         Set<Node<T>> settledNodes = new HashSet<>(); // creates a set of settled nodes
         Queue<Node<T>> unsettledNodes = new PriorityQueue<>(Collections.singleton(source));
-        while (!unsettledNodes.isEmpty()) {
+        while (!unsettledNodes.isEmpty())
+        {
             Node<T> currentNode = unsettledNodes.poll();
 
             graph.getAdjNodes(currentNode)
                     .entrySet().stream()
                     .filter(entry -> !settledNodes.contains(entry.getKey()))
-                    .forEach(entry -> {
+                    .forEach(entry ->
+                    {
                         evaluateDistanceAndPath(entry.getKey(), entry.getValue(), currentNode);
                         unsettledNodes.add(entry.getKey());
                     });
@@ -51,30 +56,53 @@ public class Dijkstra<T> {
         }
     }
 
-    private void evaluateDistanceAndPath(Node<T> adjacentNode, Integer edgeWeight, Node<T> sourceNode) {
+    private void evaluateDistanceAndPath(Node<T> adjacentNode, Integer edgeWeight, Node<T> sourceNode)
+    {
         Integer newDistance = sourceNode.getDistance() + edgeWeight;
-        if (newDistance < adjacentNode.getDistance()) {
+        if (newDistance < adjacentNode.getDistance())
+        {
             adjacentNode.setDistance(newDistance);
             adjacentNode.setShortestPath(Stream.concat(sourceNode.getShortestPath().stream(), Stream.of(sourceNode)).toList());
         }
     }
 
-    // this needs to be adjusted to output something that could go in a johnson's matrix
-    //**********************************************************************************
-    public void printPaths(List<Node<T>> nodes) {
-        nodes.forEach(node -> {
-            String path = node.getShortestPath().stream()
-                    .map(Node::getName).map(Objects::toString)
+    // I modified the below method to print out the shortest paths and actual distances.
+    // It uses the edge weights for each adjacent node from the Node class that was unchanged during the
+    // BellmanFord algorithm
+    public void printPaths(List<Node<T>> nodes)
+    {
+        for (Node<T> node : nodes)
+        {
+            // create an array list of the shortest path and add the current node to the beginning
+            List<Node<T>> shortestPath = new ArrayList<>(node.getShortestPath());
+            shortestPath.add(node);
+
+            // calculate the total distance along the shortest patch and save to variable
+            int unweightedDist = 0;
+            for (int i = 0; i < shortestPath.size() - 1; i++)
+            {
+                Node<T> currentNode = shortestPath.get(i);
+                Node<T> nextNode = shortestPath.get(i + 1);
+                unweightedDist += currentNode.getAdjacentNodes().get(nextNode);
+            }
+
+            // creates a String of the shortest path connected with "->"
+            String path = shortestPath.stream()
+                    .map(Node::getName)
+                    .map(Objects::toString)
                     .collect(Collectors.joining(" -> "));
-            System.out.println((path.isBlank()
-                    ? "%s : %s".formatted(node.getName(), node.getDistance())
-                    : "%s -> %s : %s".formatted(path, node.getName(), node.getDistance()))
-            );
-        });
+
+            // checks to see if the distance to the node is still infinite
+            String trueDist;
+            if (node.getDistance() == Integer.MAX_VALUE)
+            {
+                trueDist = "infinite";
+            } else
+            {
+                trueDist = String.valueOf(unweightedDist);
+            }
+            // prints the shortest path string and the true distance string
+            System.out.println("%s : %s".formatted(path, trueDist));
+        }
     }
-
-    // i need to figure out a way to have it output the correct distances and not the reweighted ones
-    // i accidentally found out that the original edge weights are being contained in the node's
-    // adjacentNodes hashmap, and the updated edge weights are being saved in my graph. so i can use that
-
 }

@@ -2,6 +2,7 @@ package lab6;
 
 import java.util.Scanner;
 
+// this class processes user input and returns a graph for use in the program
 public class InputProcessing
 {
     public static Graph<String> returnUserGraph(Scanner keyboard)

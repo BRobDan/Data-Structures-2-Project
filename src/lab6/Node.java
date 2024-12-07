@@ -36,19 +36,22 @@ import java.util.Map;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Node<T> implements Comparable<Node<T>> {
-
+public class Node<T> implements Comparable<Node<T>>
+{
     private final T name;
     private Integer distance = Integer.MAX_VALUE;
     private List<Node<T>> shortestPath = new LinkedList<>();
+    // I'm using the below HashMap to hold the original edge weights of the graph
     private Map<Node<T>, Integer> adjacentNodes = new HashMap<>();
 
-    public void addAdjacentNode(Node<T> node, int weight) {
+    public void addAdjacentNode(Node<T> node, int weight)
+    {
         adjacentNodes.put(node, weight);
     }
 
     @Override
-    public int compareTo(Node node) {
+    public int compareTo(Node node)
+    {
         return Integer.compare(this.distance, node.getDistance());
     }
 
